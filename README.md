@@ -13,7 +13,7 @@ This app uses the [roBrowser forked version as client](https://github.com/wjrosa
 ````shell script
 $ yarn install
 ````
-3 - Download roBrowser and put it inside /robrowser folder.
+3 - [Download roBrowser](https://github.com/wjrosa/Ragna.roBrowser) and put it inside /src/robrowser folder.
 
 4 - Run the app:
 ````shell script
