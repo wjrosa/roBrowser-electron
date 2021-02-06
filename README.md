@@ -32,3 +32,7 @@ $ yarn make
 #### Change the bin icon
 
 Include `icon.ico` and `icon.png` inside /images folder (128x128).
+
+### Credits
+
+Original idea and initial code by [SelfCastingCookies on RAthena boards](https://rathena.org/board/topic/115212-guide-create-your-own-custom-ragnar%C3%B6k-online-client-for-windows-linux-and-macos/).
