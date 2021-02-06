@@ -1,0 +1,10 @@
+node_modules
+out
+src/src/*
+.idea/
+.env
+package-lock.json
+images/*
+!images/.gitkeep
+src/robrowser/*
+!src/robrowser/.gitkeep

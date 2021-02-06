@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>roBrowser Client</title>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+		<style>
+			html, body, iframe, #robrowser {
+				height:100%;
+				width:100%;
+				margin:0;
+				padding:0;
+				overflow: hidden;
+				min-width: 800px;
+				min-height: 600px;
+			}
+		</style>
+		<!-- @todo change script to node module -->
+		<script type="text/javascript" src="robrowser/api.js"></script>
+		<script type="text/javascript">
+			const initialize = () => {
+				const ROConfig = {
+					target:        	document.getElementById("robrowser"),
+					type:           ROBrowser.TYPE.FRAME,
+					application:    ROBrowser.APP.ONLINE,
+					remoteClient:  	process.env.REMOTE_CLIENT,
+					width:          process.env.WINDOW_WIDTH,
+					height:         process.env.WINDOW_HEIGHT,
+					servers:        process.env.REMOTE_CLIENT,
+					socketProxy: 	process.env.SOCKET_PROXY,
+					development:    !!parseInt(process.env.DEVELOPMENT),
+					packetver:      parseInt(process.env.PACKETVER),
+					skipIntro:      !!parseInt(process.env.SKIP_INTRO)
+				};
+				const RO = new ROBrowser(ROConfig);
+				RO.start();
+			}
+			document.title = process.env.WINDOW_TITLE;
+			window.addEventListener("load", initialize, false);
+		</script>
+	</head>
+	<body>
+		<div id="robrowser">Initializing roBrowser...</div>
+	</body>
+</html>
