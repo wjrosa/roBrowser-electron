@@ -1,0 +1,5 @@
+{
+  "watch": ["src"],
+  "ignore": ["src/files/data", "src/files/BGM", "src/files/resources"],
+  "exec": "node ./src/parser.js"
+}

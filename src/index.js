@@ -4,12 +4,16 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const express = require('express');
-
 const server = express();
 const cors = require('cors');
+const parser = require('./files');
 
 // Handle server requests to serve static files
 server.use('/', express.static((__dirname)));
+
+// Handle game files
+server.get('/remote', (req, res) => parser.get(req, res));
+server.post('/remote', (req, res) => parser.post(req, res));
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require

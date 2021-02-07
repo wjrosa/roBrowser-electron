@@ -29,7 +29,7 @@
 					socketProxy: 	process.env.SOCKET_PROXY,
 					development:    !!parseInt(process.env.DEVELOPMENT),
 					packetver:      parseInt(process.env.PACKETVER),
-					skipIntro:      !!parseInt(process.env.SKIP_INTRO)
+					skipIntro:      !!parseInt(process.env.SKIP_INTRO),
 				};
 				const RO = new ROBrowser(ROConfig);
 				RO.start();

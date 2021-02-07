@@ -1,0 +1,10 @@
+.env
+.idea/
+.package-lock.json
+node_modules/
+data/*
+!data/.gitkeep
+BGM/*
+!BGM/.gitkeep
+resources/*
+!resources/.gitkeep

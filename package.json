@@ -6,6 +6,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
+    "start:dev-parser": "nodemon src/parser.js",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
@@ -53,7 +54,8 @@
     "dotenv": "^8.2.0",
     "electron-compile": "^6.4.4",
     "electron-squirrel-startup": "^1.0.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7"
   },
   "devDependencies": {
     "babel-plugin-transform-async-to-generator": "^6.24.1",
