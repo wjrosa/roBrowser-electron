@@ -55,7 +55,13 @@
     "electron-compile": "^6.4.4",
     "electron-squirrel-startup": "^1.0.0",
     "express": "^4.17.1",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "ini": "^2.0.0",
+    "jimp": "^0.16.1",
+    "node": "^14.15.0",
+    "path": "^0.12.7",
+    "pathinfo": "^0.1.0",
+    "utf8": "^3.0.0"
   },
   "devDependencies": {
     "babel-plugin-transform-async-to-generator": "^6.24.1",

@@ -10,7 +10,6 @@ const parser = require('./files');
 
 // Handle game files
 server.get('/remote', (req, res) => parser.get(req, res));
-server.post('/remote', (req, res) => parser.post(req, res));
 
 server.listen(port, () => {
   console.log(`parser is listening on port ${port}`);

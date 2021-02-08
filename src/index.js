@@ -13,7 +13,6 @@ server.use('/', express.static((__dirname)));
 
 // Handle game files
 server.get('/remote', (req, res) => parser.get(req, res));
-server.post('/remote', (req, res) => parser.post(req, res));
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require

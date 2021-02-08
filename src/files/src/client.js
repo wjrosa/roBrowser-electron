@@ -2,10 +2,8 @@ const Fs = require('fs');
 const Path = require('path');
 const Ini = require('ini');
 const Pathinfo = require('pathinfo');
-const Utf8 = require('utf8');
-const Jimp = require('jimp');
 
-const { Ksort, Imagecreatefrombmpstring } = require('./helpers');
+const { Ksort } = require('./helpers');
 
 /**
  * @fileoverview Client - File Manager
@@ -39,12 +37,11 @@ module.exports = {
     }
 
     // Setup GRF context
-    const data_ini = Ini.parse(Fs.readFileSync(path, 'utf-8')
-      .toString());
-    let grfs = [];
+    const dataIni = Ini.parse(Fs.readFileSync(path, 'utf-8').toString());
+    let GRFs = [];
     const info = Pathinfo(path);
 
-    const keys = Object.keys(data_ini);
+    const keys = Object.keys(dataIni);
     const index = keys.map(v => v.toLowerCase())
       .find(v => v === 'data');
 
@@ -53,18 +50,18 @@ module.exports = {
       return;
     }
 
-    grfs = data_ini[keys[index]];
-    grfs = Ksort(grfs);
+    GRFs = dataIni[keys[index]];
+    GRFs = Ksort(GRFs);
 
     console.log(`File ${path} loaded.`, 'success');
     console.log('GRFs to use :', 'info');
 
     // Open GRFs files
-    grfs.forEach((grf_filename, index) => {
-      console.log(`${index}) ${info.dirname}/${grf_filename}`);
+    GRFs.forEach((grfFilename, i) => {
+      console.log(`${i}) ${info.dirname}/${grfFilename}`);
 
-      this.grfs[index] = new Grf(`${info.dirname}/${grf_filename}`);
-      this.grfs[index].filename = grf_filename;
+      this.grfs[i] = new Grf(`${info.dirname}/${grfFilename}`);
+      this.grfs[i].filename = grfFilename;
     });
   },
 
@@ -76,29 +73,28 @@ module.exports = {
    */
   getFile(path) {
     const localPath = this.path + path.split('/').join('\\');
-    const localPathEncoded = Utf8.encode(localPath);
 
     console.log(`Searching file ${path}...`, 'title');
 
     // Read data first
-    if (Fs.existsSync(localPathEncoded) && !Fs.lstatSync(localPathEncoded).isDirectory()) {
+    if (Fs.existsSync(localPath) && !Fs.lstatSync(localPath).isDirectory()) {
       try {
-        Fs.accessSync(localPathEncoded, Fs.constants.R_OK);
+        Fs.accessSync(localPath, Fs.constants.R_OK);
 
         console.log(`File found at ${localPath}`, 'success');
 
         // Store file
         if (this.autoExtract) {
-          return this.store(path, Fs.readFileSync(localPathEncoded).toString());
+          return this.store(path, Fs.readFileSync(localPath).toString());
         }
-        return Fs.readFileSync(localPathEncoded).toString();
+        return Fs.readFileSync(localPath).toString();
       } catch (err) {
         console.log(`File not found at ${localPath}`);
 
         this.grfs.forEach((grf) => {
           // Load GRF just if needed
           if (!grf.loaded) {
-            console.log('Loading GRF: '.grf.filename, 'info');
+            console.log(`Loading GRF: ${grf.filename}`, 'info');
             grf.load();
           }
 
@@ -114,79 +110,5 @@ module.exports = {
       }
     }
     return false;
-  },
-
-  /**
-   * Storing file in data folder (convert it if needed)
-   *
-   * @param {string} path save to path
-   * @param {string} content file content
-   * @return {string} content
-   */
-  store(path, content) {
-    let encodedPath = Utf8.encode(path);
-    const current_path = this.path;
-    const local_path = current_path + encodedPath.replace('\\', '/');
-    const parent_path = local_path.replace(/[^\/]+$/, '');
-
-    if (!Fs.existsSync(parent_path)) {
-      if (!Fs.mkdirSync(parent_path, { recursive: true })) {
-        console.log(`Can't build path ${parent_path}, need write permission ?`, 'error');
-        return content;
-      }
-    }
-
-    try {
-      Fs.accessSync(parent_path, Fs.constants.R_OK);
-    } catch (err) {
-      console.log(`Can't write file to ${parent_path}, need write permission.`, 'error');
-      return content;
-    }
-
-    // storing bmp images as png
-    if (Pathinfo(encodedPath)
-      .extname
-      .toLowerCase() === 'bmp') {
-      const bmpImage = Imagecreatefrombmpstring($content);
-      encodedPath = local_path.replace(/.bmp|.BMP/g, '.png');
-      Jimp.read(bmpImage, (err, image) => {
-        if (err) {
-          console.log(`Can't read image file on ${content}`, 'error');
-          return;
-        }
-        image.write(encodedPath);
-      });
-      return Fs.readFileSync(encodedPath)
-        .toString();
-    }
-
-    // Saving file
-    Fs.writeFileSync(local_path, content);
-    return content;
-  },
-
-  /**
-   * Search files (only work in GRF)
-   *
-   * @param {string} filter regex
-   * @return {Array} file list
-   */
-  search(filter) {
-    let out = [];
-
-    this.grfs.forEach((grf) => {
-      // Load GRF only if needed
-      if (grf.loaded) {
-        grf.load();
-      }
-
-      // Search
-      const list = grf.search(filter);
-
-      // Merge
-      out = [...new Set([...out, ...list])];
-    });
-
-    return out;
   },
 };
