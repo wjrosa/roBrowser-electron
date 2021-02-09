@@ -8,10 +8,15 @@ dotenv.config();
 const Client = require('./src/client');
 
 module.exports = {
+  // Get file
   get: (req, res) => {
-    // Get file
-    const ext = Path.extname(req.query.filename).toLowerCase().replace('.', '');
-    const file = Client.getFile(req.query.filename);
+    let filename = req.query.filename;
+
+    // Replace login background
+    if (Path.basename(filename) === 'bgi_temp.bmp') {
+      filename = filename.replace('bmp', 'png');
+    }
+    const file = Client.getFile(filename);
 
     // File not found, end.
     if (!file) {
@@ -21,9 +26,10 @@ module.exports = {
 
     console.log('Success!');
 
-    res.set('Cache-Control', 'max-age=3600, public');
+    res.set('Cache-Control', 'no-cache');
 
     // Display appropriate header
+    const ext = Path.extname(filename).toLowerCase().replace('.', '');
     switch (ext) {
       case 'jpg':
       case 'jpeg':
@@ -31,6 +37,9 @@ module.exports = {
         break;
       case 'bmp':
         res.set('Content-Type', 'image/bmp');
+        break;
+      case 'png':
+        res.set('Content-Type', 'image/png');
         break;
       case 'gif':
         res.set('Content-Type', 'image/gif');

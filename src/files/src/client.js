@@ -3,13 +3,11 @@ const Path = require('path');
 
 /**
  * @fileoverview Client - File Manager
- * @author Vincent Thibault (alias KeyWorld - Twitter: @robrowser)
- * @version 1.5.1
+ * @author Wesley Rosa (alias RavenheartZ - Twitter: @WesleyRosa)
+ * @version 1.0.0
  */
 module.exports = {
   path: Path.join(__dirname, '..', '..', 'robrowser', 'client'),
-  data_ini: '',
-  grfs: [],
 
   /**
    * Get a file from client, search it on data folder first and then on grf
