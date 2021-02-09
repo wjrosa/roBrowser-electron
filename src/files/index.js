@@ -8,14 +8,6 @@ dotenv.config();
 const Client = require('./src/client');
 
 module.exports = {
-  init: () => {
-    Client.path = '';
-    Client.data_ini = process.env.CLIENT_RESPATH + process.env.CLIENT_DATAINI;
-    Client.autoExtract = process.env.CLIENT_AUTOEXTRACT;
-
-    // Initialize client
-    Client.init();
-  },
   get: (req, res) => {
     // Get file
     const ext = Path.extname(req.query.filename).toLowerCase().replace('.', '');
@@ -23,15 +15,13 @@ module.exports = {
 
     // File not found, end.
     if (!file) {
-      console.log('Failed, file not found...', 'error');
-      res.status(404);
-      return res.send('File not found');
+      console.error('Failed, file not found...');
+      return res.status(404).send('File not found');
     }
 
-    console.log('Success!', 'success');
+    console.log('Success!');
 
-    res.status(200);
-    res.set('Cache-Control', 'max-age=2592000, public');
+    res.set('Cache-Control', 'max-age=3600, public');
 
     // Display appropriate header
     switch (ext) {
@@ -58,6 +48,6 @@ module.exports = {
         res.set('Content-Type', 'application/octet-stream');
         break;
     }
-    return res.end(file);
+    return res.status(200).send(file);
   },
 };
