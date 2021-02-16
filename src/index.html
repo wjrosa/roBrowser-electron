@@ -30,6 +30,7 @@
 					development:    !!parseInt(process.env.DEVELOPMENT),
 					packetver:      parseInt(process.env.PACKETVER),
 					skipIntro:      !!parseInt(process.env.SKIP_INTRO),
+					saveFiles:		!!parseInt(process.env.SAVE_FILES),
 				};
 				const RO = new ROBrowser(ROConfig);
 				RO.start();

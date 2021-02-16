@@ -4,6 +4,7 @@ src/src/*
 .idea/
 .env
 package-lock.json
+yarn-error.log
 
 images/*
 !images/.gitkeep
@@ -19,3 +20,6 @@ src/files/BGM/*
 
 src/files/resources/*
 !src/files/resources/.gitkeep
+
+src/wsproxy/*
+!src/wsproxy/.gitkeep

@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -7,6 +7,8 @@ const express = require('express');
 const server = express();
 const cors = require('cors');
 const parser = require('./files');
+
+const devToolsEnabled = parseInt(process.env.ENABLE_DEV_TOOLS, 10) === 1;
 
 // Handle server requests to serve static files
 server.use('/', express.static((__dirname)));
@@ -26,6 +28,10 @@ server.use(cors({ origin: '*' }));
 // Enable audio autoplay
 app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
 
+// @todo not working
+// app.commandLine.appendSwitch('enable-vulkan');
+// app.commandLine.appendSwitch('ignore-gpu-blacklist');
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
@@ -44,10 +50,14 @@ const createWindow = () => {
   mainWindow.loadURL('http://127.0.0.1:5737');
 
   // Disabling the webtools
-  // mainWindow.webContents.on('devtools-opened', () => { mainWindow.webContents.closeDevTools(); });
+  if (!devToolsEnabled) {
+    mainWindow.webContents.on('devtools-opened', () => { mainWindow.webContents.closeDevTools(); });
+  }
 
   // Disabling the mainmenu
-  // mainWindow.setMenu(null);
+  if (!devToolsEnabled) {
+    mainWindow.setMenu(null);
+  }
 
   mainWindow.maximize();
 
